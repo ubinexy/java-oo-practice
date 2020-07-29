@@ -1,10 +1,10 @@
-package com.twu.events;
+package com.twu.topics;
 
-public class Event {
+public class Topic {
     protected String name;
     protected int votes;
 
-    public Event(String name) {
+    public Topic(String name) {
         this.name = name;
         this.votes = 0;
     }

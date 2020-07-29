@@ -6,6 +6,7 @@ public class User {
     private String username;
     private String password;
     private int type;
+    public String[] menus;
 
     public User(String username, String password, int type) {
         this.username = username;
@@ -26,11 +27,11 @@ public class User {
     }
 
     public void seeRankings(RankingSystem core){
-        core.seeRankings();
+        core.showRankings();
     }
 
     public void addEvent(RankingSystem core) {
-        core.addEvent();
+            core.addTopic();
     }
 
     public void buyEventRanking(RankingSystem core) {

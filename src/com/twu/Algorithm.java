@@ -1,6 +1,6 @@
 package com.twu;
 
-import com.twu.events.Event;
+import com.twu.topics.Topic;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,41 +55,41 @@ public class Algorithm {
         return true;
     }
 
-    public void ranking(int position, Event event, List<Event> events) {
+    public void ranking(int position, Topic topic, List<Topic> topicList) {
         // 插入排序，当 aduction() 返回为真之后调用。
-        events.remove(event);
-        events.add(position, event);
+        topicList.remove(topic);
+        topicList.add(position, topic);
     }
 
-    public ArrayList<Event> sorted(Event e, ArrayList<Event> events) {
+    public ArrayList<Topic> sorted(Topic topic, ArrayList<Topic> topics) {
         // 更新榜单的排序，当用户增加某个热搜的票数之后调用。
         // 注意：排序只在与这个热搜，有相同的竞价价格的集合中进行。
 
-        int money = currentPrices[events.indexOf(e)];
+        int money = currentPrices[topics.indexOf(topic)];
 
-        int[] indices= IntStream.range(0, events.size())
+        int[] indices= IntStream.range(0, topics.size())
                 .filter(i -> currentPrices[i] == money).toArray();
 
-        ArrayList<Event> sorted = new ArrayList<>();
+        ArrayList<Topic> sorted = new ArrayList<>();
         for (int i=0 ; i < indices.length; i++) {
-            sorted.add(events.get(indices[i]));
+            sorted.add(topics.get(indices[i]));
         }
 
-        List<Event> sorted2 = sorted.stream()
-                .sorted(Comparator.comparing(Event::getVotes).reversed())
+        List<Topic> sorted2 = sorted.stream()
+                .sorted(Comparator.comparing(Topic::getVotes).reversed())
                 .collect(Collectors.toList());
 
         for (int i=0 ; i < indices.length; i++) {
-            events.set(indices[i], sorted2.get(i));
+            topics.set(indices[i], sorted2.get(i));
         }
-        return events;
+        return topics;
     }
 
-    public void delete(Event e, ArrayList<Event> events) {
+    public void delete(Topic e, ArrayList<Topic> topics) {
         // 删除某条热搜事件，
         // 同时更新 currentPrices[] 数组。
         //
-        int pos = events.indexOf(e);
+        int pos = topics.indexOf(e);
 
         for(int i = pos; i < MAX_RANKINGS-1; i++) {
             currentPrices[i] = currentPrices[i+1];
@@ -97,6 +97,6 @@ public class Algorithm {
         if(pos < MAX_RANKINGS-1)
             currentPrices[MAX_RANKINGS-1] = 0;
 
-        events.remove(e);
+        topics.remove(e);
     }
 }

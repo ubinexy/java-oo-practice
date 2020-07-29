@@ -1,6 +1,8 @@
 package com.twu;
 
 import com.twu.users.User;
+import com.twu.view.LoginView;
+import com.twu.view.WelcomeView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,114 +18,94 @@ public class Controller {
     private String[] menus;
     private Map<String, Method> callbacks = new HashMap<>();
 
+    private LoginView login;
+    private WelcomeView welcome;
+
+    private int session = -1;
 
     public void registerUser(User[] users) {
         this.users = users;
-        core = new RankingSystem();
+        this.core = new RankingSystem();
+        this.login = new LoginView(users,this);
     }
-
 
     public void run() {
-        int session = signIn();
-        if(session < 0) {
-            System.out.println("再见！");
-            return;
-        }
-
-        try {
-            userConfigure(session);
-        } catch (NoSuchMethodException e) {
-            System.out.println("找不到函数");
-            return;
-        }
-
-        try {
-            welcome(session);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            System.out.println("运行时异常");
-        }
-
-    }
-
-    private int signIn()  {
-        String answer;
-
-        do {
-            System.out.println("\n欢迎来到热搜排行榜，你是：");
-
-            for(int i = 0; i < users.length; ++i) {
-                if(users[i].getType() == 0)
-                    System.out.printf("%d. %s (管理员)\n", i+1, users[i].getUsername());
-                else if(users[i].getType() == 1)
-                    System.out.printf("%d. %s (普通用户)\n", i+1, users[i].getUsername());
+        while(true) {
+            login.view();
+            if (session < 0) {
+                System.out.println("再见！");
+                return;
             }
-            System.out.println("输入quit 可退出");
-            Scanner in = new Scanner(System.in);
-            answer = in.next().trim();
 
             try {
-                int n = Integer.parseInt(answer);n = n-1;
-
-                if(n >= 0 && n < users.length) {
-                    if(autheticate(n)) return n;
-                    System.out.println("密码错误");
-                }
-            } catch(NumberFormatException e) {
-                if(!answer.equals("quit"))
-                    System.out.println("密码错误");
+                setCallbacks(session);
+            } catch (NoSuchMethodException e) {
+                System.out.println("找不到函数");
+                return;
             }
-        } while(!answer.equals("quit"));
-        return -1;
 
-    }
-
-    private boolean autheticate(int id) {
-        System.out.println("请输入密码：");
-
-        Scanner in = new Scanner(System.in);
-        String passwd = in.next().trim();
-
-        return users[id].getPassword().equals(passwd);
+            welcome = new WelcomeView(users[session], this);
+            welcome.view();
+            login.viewShouldQuit = false;
+        }
     }
 
 
-    private void userConfigure(int session) throws NoSuchMethodException {
-        User user = users[session];
-        if(user.getType() == 0) {
+    public void autheticate(String cmd) {
+        if(cmd.equals("quit")) {
+            login.viewShouldQuit = true;
+            return;
+        }
+
+        try {
+            int id = Integer.parseInt(cmd); id--;
+            if(id >= users.length || id < 0) return;
+            System.out.println("请输入密码：");
+            Scanner in = new Scanner(System.in);
+            String passwd = in.next().trim();
+
+            if(users[id].getPassword().equals(passwd)) {
+                login.viewShouldQuit = true;
+                this.session = id;
+            } else {
+                System.out.println("密码错误");
+            }
+        } catch(Exception e) {
+        }
+
+    }
+
+
+    private void setCallbacks(int userId) throws NoSuchMethodException {
+        if(userId == 0) {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
             callbacks.put("2", User.class.getDeclaredMethod("addEvent", RankingSystem.class));
             callbacks.put("3", User.class.getDeclaredMethod("addSuperEvent", RankingSystem.class));
             callbacks.put("4", User.class.getDeclaredMethod("removeEvent", RankingSystem.class));
-            menus = new String[]{"查看热搜排行榜", "添加热搜", "添加超级热搜", "删除热搜"};
         }
-        else if(user.getType() == 1) {
+        else if(userId == 1) {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
             callbacks.put("2", User.class.getDeclaredMethod("addEvent", RankingSystem.class));
             callbacks.put("3", User.class.getDeclaredMethod("voteEvent", RankingSystem.class));
             callbacks.put("4", User.class.getDeclaredMethod("buyEventRanking", RankingSystem.class));
-            menus = new String[]{"查看热搜排行榜", "添加热搜", "给热搜事件投票", "购买热搜"};
         }
     }
 
-    private void welcome(int session) throws InvocationTargetException, IllegalAccessException {
-        String answer;
-        User usr = users[session];
-        do {
-            System.out.printf("\n你好，%s, 你可以：\n", usr.getUsername());
-            for(int i = 0; i < menus.length; ++i) {
-                System.out.printf("%d. %s\n", i+1, menus[i]);
+    public void callback(String cmd) {
+        if(cmd.equals("back")) {
+            welcome.viewShouldQuit = true;
+            session = -1;
+            return;
+        }
+
+        try {
+            if(callbacks.containsKey(cmd)) {
+                Method m = callbacks.get(cmd);
+                User user = users[session];
+                if(m != null) m.invoke(user, core);
             }
-            System.out.println("输入back 可返回");
-
-            Scanner in = new Scanner(System.in);
-            answer = in.next().trim();
-
-            if(callbacks.containsKey(answer)) {
-                Method m = callbacks.get(answer);
-                if(m != null) m.invoke(usr, core);
-            }
-        } while (!answer.equals("back"));
-
-        this.run();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            System.out.println("运行时错误");
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.twu;
 
-import com.twu.users.AdminUser;
+import com.twu.users.Admin;
 import com.twu.users.OrdinaryUser;
 import com.twu.users.User;
 
@@ -12,7 +12,7 @@ public class Main {
         Controller controller = new Controller();
 
         User[] users = {
-                new AdminUser("admin", "1234"),
+                new Admin("admin", "1234"),
                 new OrdinaryUser("kaka", "1234")
         };
 

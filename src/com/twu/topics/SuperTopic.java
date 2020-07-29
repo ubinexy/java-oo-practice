@@ -1,9 +1,9 @@
-package com.twu;
+package com.twu.topics;
 
-public class SuperEvent extends Event {
+public class SuperTopic extends Topic {
     private int VALUE = 2;
 
-    public SuperEvent(String name) {
+    public SuperTopic(String name) {
         super(name);
     }
 
@@ -14,6 +14,6 @@ public class SuperEvent extends Event {
 
     @Override
     public String toString() {
-        return name + "（hot） " + votes;
+        return name + "（Hot） " + votes;
     }
 }
