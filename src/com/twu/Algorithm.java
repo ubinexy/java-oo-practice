@@ -85,11 +85,11 @@ public class Algorithm {
         return topics;
     }
 
-    public void delete(Topic e, ArrayList<Topic> topics) {
+    public void delete(Topic topic, ArrayList<Topic> topics) {
         // 删除某条热搜事件，
         // 同时更新 currentPrices[] 数组。
         //
-        int pos = topics.indexOf(e);
+        int pos = topics.indexOf(topic);
 
         for(int i = pos; i < MAX_RANKINGS-1; i++) {
             currentPrices[i] = currentPrices[i+1];
@@ -97,6 +97,6 @@ public class Algorithm {
         if(pos < MAX_RANKINGS-1)
             currentPrices[MAX_RANKINGS-1] = 0;
 
-        topics.remove(e);
+        topics.remove(topic);
     }
 }

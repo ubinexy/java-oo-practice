@@ -90,10 +90,10 @@ public class RankingSystem {
     }
 
 
-    public void voteTopic(int number, Topic e) {
-        e.addVotes(number);
+    public void voteTopic(int number, Topic topic) {
+        topic.addVotes(number);
 
-        topics = algorithm.sorted(e, topics);
+        topics = algorithm.sorted(topic, topics);
     }
 
     public void setEventRanking() throws Exception {
@@ -122,7 +122,7 @@ public class RankingSystem {
             int money = scanner.nextInt();
 
             if(algorithm.aduction(ranking, money)) {
-                algorithm.ranking(ranking, topic, this.topics);
+                algorithm.ranking(ranking, topic, topics);
             } else {
                 throw new Exception("竞价金额不够");
             }
