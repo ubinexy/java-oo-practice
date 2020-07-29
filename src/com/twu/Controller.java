@@ -1,5 +1,7 @@
 package com.twu;
 
+import com.twu.users.User;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ public class Controller {
         String answer;
 
         do {
-            System.out.println("欢迎来到热搜排行榜，你是：");
+            System.out.println("\n欢迎来到热搜排行榜，你是：");
 
             for(int i = 0; i < users.length; ++i) {
                 if(users[i].getType() == 0)
@@ -91,7 +93,8 @@ public class Controller {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
             callbacks.put("2", User.class.getDeclaredMethod("addEvent", RankingSystem.class));
             callbacks.put("3", User.class.getDeclaredMethod("addSuperEvent", RankingSystem.class));
-            menus = new String[]{"查看热搜排行榜", "添加热搜", "添加超级热搜"};
+            callbacks.put("4", User.class.getDeclaredMethod("removeEvent", RankingSystem.class));
+            menus = new String[]{"查看热搜排行榜", "添加热搜", "添加超级热搜", "删除热搜"};
         }
         else if(user.getType() == 1) {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
