@@ -22,4 +22,24 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    public void seeRankings(RankingSystem core){
+      core.seeRankings();
+    }
+
+    public void addEvent(RankingSystem core) {
+        core.addEvent();
+    }
+
+    public void buyEventRanking(RankingSystem core) {
+        // this function should never be invoked
+    }
+
+    public void voteEvent(RankingSystem core) {
+        // this function should never be invoked
+    }
+
+    public void addSuperEvent(RankingSystem core) {
+        // this function should never be invoked
+    }
 }

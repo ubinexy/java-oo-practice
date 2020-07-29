@@ -7,8 +7,8 @@ public class Main {
 
         Controller controller = new Controller();
 
-        User[] users = new User[]{
-                new Admin("admin", "1234"),
+        User[] users = {
+                new AdminUser("admin", "1234"),
                 new OrdinaryUser("kaka", "1234")
         };
 
