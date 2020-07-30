@@ -9,7 +9,7 @@ public class SuperTopic extends Topic {
 
     @Override
     public void addVotes(int number) {
-        votes += VALUE;
+        votes += number*VALUE;
     }
 
     @Override
