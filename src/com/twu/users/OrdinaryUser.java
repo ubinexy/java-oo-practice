@@ -16,7 +16,6 @@ public class OrdinaryUser extends User {
 
     @Override
     public void voteTopic(RankingSystem core) {
-
         try {
             Topic topic = core.selectTopic();
             queryVote(core, topic);

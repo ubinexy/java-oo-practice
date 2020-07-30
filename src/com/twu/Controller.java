@@ -30,6 +30,7 @@ public class Controller {
 
     public void run() {
         while(true) {
+            login.viewShouldQuit = false;
             login.view();
             if (session < 0) {
                 System.out.println("再见！");
@@ -39,13 +40,12 @@ public class Controller {
             try {
                 setCallbacks(session);
             } catch (NoSuchMethodException e) {
-                System.out.println("找不到函数");
+                System.out.println("运行时错误，找不到函数");
                 return;
             }
 
             welcome = new WelcomeView(users[session], this);
             welcome.view();
-            login.viewShouldQuit = false;
         }
     }
 

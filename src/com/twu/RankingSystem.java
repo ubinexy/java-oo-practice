@@ -37,17 +37,13 @@ public class RankingSystem {
         });
         Scanner scanner = new Scanner(System.in);
 
-        try {
-            int i = scanner.nextInt(); i--;
-            if(i >= 0 && i < topics.size())
-                return topics.get(i);
-        } catch(Exception e) {
+        int i = scanner.nextInt(); i--;
+        if(i >= 0 && i < topics.size()) return topics.get(i);
 
-        }
-        throw new UnrecognizedInputException("无法识别的输入");
+        throw new UnrecognizedInputException("无法识别");
     }
 
-    public void addTopic() {
+    public void addTopic() throws Exception {
         System.out.println("请输入要添加的热搜名称：");
         Scanner scanner = new Scanner(System.in);
         String name = scanner.next().trim();
@@ -55,14 +51,13 @@ public class RankingSystem {
         boolean find = topics.stream().anyMatch(x->x.getName().equals(name));
         if(find) {
             System.out.println("已经有这条热搜了");
-            System.out.println("添加失败");
+            throw new Exception("添加失败");
         } else {
             topics.add(new Topic(name));
-            System.out.println("添加成功");
         }
     }
 
-    public void addSuperTopic(User user) {
+    public void addSuperTopic(User user) throws Exception {
         if(user.getType() == 1) return;
         System.out.println("请输入要添加的热搜名称：");
         Scanner scanner = new Scanner(System.in);
@@ -71,28 +66,23 @@ public class RankingSystem {
         boolean find = topics.stream().anyMatch(x->x.getName().equals(name));
         if(find) {
             System.out.println("已经有这条热搜了");
-            System.out.println("添加失败");
+            throw new Exception("添加失败");
         } else {
             topics.add(new SuperTopic(name));
-            System.out.println("添加成功");
         }
     }
 
-    public void removeTopic(User admin) {
+    public void removeTopic(User admin) throws UnrecognizedInputException {
         if (admin.getType() == 1) return;
-        try {
-            Topic e = selectTopic();
-            algorithm.delete(e, topics);
-            System.out.println("删除成功");
-        } catch (UnrecognizedInputException e) {
-            System.out.println("删除失败");
-        }
+
+        Topic e = selectTopic();
+        algorithm.delete(e, topics);
     }
 
 
     public void voteTopic(int number, Topic topic) {
-        topic.addVotes(number);
 
+        topic.addVotes(number);
         topics = algorithm.sorted(topic, topics);
     }
 
@@ -104,32 +94,19 @@ public class RankingSystem {
         System.out.printf("你要竞价的名次是：(1-%d)\n", maxAvailable);
         Scanner scanner = new Scanner(System.in);
 
-        int ranking;
-        try {
-            ranking = scanner.nextInt(); ranking--;
-            if(ranking < 0 || ranking >= maxAvailable) {
-                throw new UnrecognizedInputException("超出范围");
-            }
-        } catch(Exception e) {
-            throw new UnrecognizedInputException("无法识别的输入");
+        int ranking = scanner.nextInt(); ranking--;
+        if(ranking < 0 || ranking >= maxAvailable) {
+            throw new UnrecognizedInputException("超出范围");
         }
 
         System.out.println("你要出的价格是：(请输入整数)");
         scanner = new Scanner(System.in);
+        int money = scanner.nextInt();
 
-
-        try {
-            int money = scanner.nextInt();
-
-            if(algorithm.aduction(ranking, money)) {
-                algorithm.ranking(ranking, topic, topics);
-            } else {
-                throw new Exception("竞价金额不够");
-            }
-        } catch(Exception e) {
-            throw new UnrecognizedInputException("无法识别的输入");
+        if(algorithm.aduction(ranking, money)) {
+            algorithm.ranking(ranking, topic, topics);
+        } else {
+            throw new Exception("竞价金额不够");
         }
     }
-
-
 }

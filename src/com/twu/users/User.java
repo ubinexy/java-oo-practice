@@ -31,7 +31,13 @@ public class User {
     }
 
     public void addTopic(RankingSystem core) {
+        try {
             core.addTopic();
+            System.out.println("添加成功");
+        } catch(Exception e) {
+            System.out.println("添加失败");
+        }
+
     }
 
     public void buyTopicRanking(RankingSystem core) {

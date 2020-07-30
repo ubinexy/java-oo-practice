@@ -11,11 +11,21 @@ public class Admin extends User {
 
     @Override
     public void addSuperTopic(RankingSystem core) {
-        core.addSuperTopic(this);
+        try {
+            core.addSuperTopic(this);
+            System.out.println("添加成功");
+        } catch (Exception e){
+            System.out.println("添加失败");
+        }
     }
 
     @Override
     public void removeTopic(RankingSystem core) {
-        core.removeTopic(this);
+        try {
+            core.removeTopic(this);
+            System.out.println("删除成功");
+        } catch (Exception e) {
+            System.out.println("删除失败");
+        }
     }
 }
