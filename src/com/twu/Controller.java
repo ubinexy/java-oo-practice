@@ -94,6 +94,7 @@ public class Controller {
     public void callback(String cmd) {
         if(cmd.equals("back")) {
             welcome.viewShouldQuit = true;
+            callbacks.clear();
             session = -1;
             return;
         }
