@@ -15,7 +15,6 @@ public class Controller {
     private User[] users;
     private RankingSystem core;
 
-    private String[] menus;
     private Map<String, Method> callbacks = new HashMap<>();
 
     private LoginView login;
@@ -79,19 +78,19 @@ public class Controller {
     private void setCallbacks(int userId) throws NoSuchMethodException {
         if(userId == 0) {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
-            callbacks.put("2", User.class.getDeclaredMethod("addEvent", RankingSystem.class));
-            callbacks.put("3", User.class.getDeclaredMethod("addSuperEvent", RankingSystem.class));
-            callbacks.put("4", User.class.getDeclaredMethod("removeEvent", RankingSystem.class));
+            callbacks.put("2", User.class.getDeclaredMethod("addTopic", RankingSystem.class));
+            callbacks.put("3", User.class.getDeclaredMethod("addSuperTopic", RankingSystem.class));
+            callbacks.put("4", User.class.getDeclaredMethod("removeTopic", RankingSystem.class));
         }
         else if(userId == 1) {
             callbacks.put("1", User.class.getDeclaredMethod("seeRankings", RankingSystem.class));
-            callbacks.put("2", User.class.getDeclaredMethod("addEvent", RankingSystem.class));
-            callbacks.put("3", User.class.getDeclaredMethod("voteEvent", RankingSystem.class));
-            callbacks.put("4", User.class.getDeclaredMethod("buyEventRanking", RankingSystem.class));
+            callbacks.put("2", User.class.getDeclaredMethod("addTopic", RankingSystem.class));
+            callbacks.put("3", User.class.getDeclaredMethod("voteTopic", RankingSystem.class));
+            callbacks.put("4", User.class.getDeclaredMethod("buyTopicRanking", RankingSystem.class));
         }
     }
 
-    public void callback(String cmd) {
+    public void invokeCallback(String cmd) {
         if(cmd.equals("back")) {
             welcome.viewShouldQuit = true;
             callbacks.clear();

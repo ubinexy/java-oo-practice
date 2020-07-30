@@ -28,7 +28,7 @@ public class WelcomeView {
             Scanner in = new Scanner(System.in);
             String answer = in.next().trim();
 
-            controller.callback(answer);
+            controller.invokeCallback(answer);
         }
     }
 }

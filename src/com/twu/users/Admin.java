@@ -10,12 +10,12 @@ public class Admin extends User {
     }
 
     @Override
-    public void addSuperEvent(RankingSystem core) {
+    public void addSuperTopic(RankingSystem core) {
         core.addSuperTopic(this);
     }
 
     @Override
-    public void removeEvent(RankingSystem core) {
+    public void removeTopic(RankingSystem core) {
         core.removeTopic(this);
     }
 }

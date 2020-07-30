@@ -15,7 +15,7 @@ public class OrdinaryUser extends User {
     }
 
     @Override
-    public void voteEvent(RankingSystem core) {
+    public void voteTopic(RankingSystem core) {
 
         try {
             Topic topic = core.selectTopic();
@@ -27,7 +27,7 @@ public class OrdinaryUser extends User {
     }
 
     @Override
-    public void buyEventRanking(RankingSystem core) {
+    public void buyTopicRanking(RankingSystem core) {
         try {
             core.setEventRanking();
             System.out.println("竞价成功");

@@ -30,23 +30,23 @@ public class User {
         core.showRankings();
     }
 
-    public void addEvent(RankingSystem core) {
+    public void addTopic(RankingSystem core) {
             core.addTopic();
     }
 
-    public void buyEventRanking(RankingSystem core) {
+    public void buyTopicRanking(RankingSystem core) {
         // this function should never be invoked
     }
 
-    public void voteEvent(RankingSystem core) {
+    public void voteTopic(RankingSystem core) {
         // this function should never be invoked
     }
 
-    public void addSuperEvent(RankingSystem core) {
+    public void addSuperTopic(RankingSystem core) {
         // this function should never be invoked
     }
 
-    public void removeEvent(RankingSystem core) {
+    public void removeTopic(RankingSystem core) {
         // this function should never be invoked
     }
 }
